@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f6f8fc">
+  <title>SQL Mastery Lab | KG CAS Technical Dept</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- LOGIN -->
+  <section id="loginPage" class="screen login-page">
+    <div class="login-glow glow-a"></div><div class="login-glow glow-b"></div>
+    <div class="login-layout">
+      <div class="login-brand">
+        <div class="brand-mark">SQL</div>
+        <span class="eyebrow">KGCAS Technical Team</span>
+        <h1>SQL<br><span>Mastery Lab</span></h1>
+        <p>Build SQL confidence through guided challenges, instant query execution and measurable progress.</p>
+        <div class="login-highlights">
+          <span>15 learning levels</span><span><span id="challengeCountLogin">135</span> challenges</span><span>Browser SQL engine</span>
+        </div>
+      </div>
+
+      <div class="login-card">
+        <div class="login-card-head">
+          <span class="status-dot"></span>
+          <span>Secure learner portal</span>
+        </div>
+        <h2 id="loginCardTitle">Welcome back</h2>
+        <p id="loginCardDescription" class="muted">Sign in to continue your SQL journey.</p>
+
+        <div id="loginTabs" class="login-tabs">
+          <button id="studentLoginTab" class="login-tab active" type="button">Student</button>
+          <button id="adminLoginTab" class="login-tab" type="button">Admin</button>
+        </div>
+
+        <div id="loginForm">
+          <div class="signup-only hidden">
+            <label for="signupName">Full name</label>
+            <input id="signupName" type="text" autocomplete="name" placeholder="Your full name">
+          </div>
+
+          <label for="loginEmail">Email address</label>
+          <input id="loginEmail" type="email" autocomplete="username" placeholder="you@example.com">
+          <small class="field-hint">Enter your registered email address to log in.</small>
+
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password">
+          <button id="forgotPasswordBtn" class="link-btn forgot-password-btn" type="button">Forgot password?</button>
+
+          <div class="signup-only hidden">
+            <label for="signupConfirmPassword">Confirm password</label>
+            <input id="signupConfirmPassword" type="password" autocomplete="new-password" placeholder="Re-enter your password">
+          </div>
+
+          <button id="loginBtn" class="primary-btn full" type="button"><span>Sign in</span><span class="btn-arrow">→</span></button>
+
+          <div id="authToggleRow" class="auth-toggle-row">
+            <span id="authToggleText">New student?</span>
+            <button id="authToggleLink" type="button" class="secondary-btn full auth-toggle-btn">Sign Up</button>
+          </div>
+        </div>
+
+        <div id="passwordRecoveryForm" class="hidden">
+          <label for="newPassword">New password</label>
+          <input id="newPassword" type="password" autocomplete="new-password" placeholder="At least 6 characters">
+          <label for="confirmNewPassword">Confirm new password</label>
+          <input id="confirmNewPassword" type="password" autocomplete="new-password" placeholder="Re-enter your new password">
+          <button id="saveNewPasswordBtn" class="primary-btn full" type="button"><span>Update password</span><span class="btn-arrow">→</span></button>
+        </div>
+
+        <p id="loginMessage" class="login-message" aria-live="polite"></p>
+        <div class="login-foot">Authentication powered by Supabase</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STUDENT LANDING -->
+  <section id="landingPage" class="screen landing-page hidden">
+    <header class="landing-topbar">
+      <div class="brand-lockup"><div class="brand-mark small">SQL</div><div><strong>SQL MASTERY LAB</strong><small>KG College of Arts & Science</small></div></div>
+      <button class="ghost-btn" data-action="logout">Sign out</button>
+    </header>
+    <div class="landing-content">
+      <div class="institution-block">
+        <div class="logo-wrap"><img src="./techlogo.png" alt="KG College of Arts and Science Technical Team logo"></div>
+        <span class="eyebrow">TECHNICAL TRAINING DEPARTMENT</span>
+      </div>
+      <span class="hero-badge">PLACEMENT-READY SQL TRAINING</span>
+      <h1>SQL <span>Mastery Journey</span></h1>
+      <h2 id="landingWelcome">Welcome, learner</h2>
+      <p class="landing-intro">From your first <code>SELECT</code> to advanced SQL. Practise on a realistic ecommerce database, run queries in your browser and learn from every result.</p>
+
+      <div class="journey-points">
+        <div><strong id="challengeCountLanding">135</strong><span>Challenges</span></div>
+        <div><strong>15</strong><span>Learning Levels</span></div>
+        <div><strong>3</strong><span>Core Tables</span></div>
+        <div><strong>∞</strong><span>Practice</span></div>
+      </div>
+
+      <div class="landing-name">
+        <label for="landingStudentName">Student name <small>(optional)</small></label>
+        <input id="landingStudentName" type="text" placeholder="Enter your name to track progress">
+      </div>
+      <div class="landing-actions">
+        <button id="startJourneyBtn" class="primary-btn large">Start SQL Journey <span>→</span></button>
+        <button id="landingGuideBtn" class="secondary-btn large">Read Student Guide</button>
+      </div>
+      <div class="landing-note"><strong>Learning principle</strong><span>Don't just write a query that works. Learn to explain why it works.</span></div>
+    </div>
+  </section>
+
+  <!-- ADMIN -->
+  <section id="adminPage" class="screen admin-page hidden">
+    <header class="topbar">
+      <div class="brand-lockup"><div class="brand-mark small">SQL</div><div><strong>SQL MASTERY LAB</strong><small>Administration</small></div></div>
+      <button class="ghost-btn" data-action="logout">Sign out</button>
+    </header>
+    <main class="admin-main">
+      <span class="eyebrow">ADMIN CONSOLE</span><h1>Training overview</h1><p class="muted">Signed-in administrator account and course configuration.</p>
+      <div class="admin-grid">
+        <article class="admin-card"><span class="admin-icon">01</span><small>ADMINISTRATOR</small><strong id="adminName">—</strong><p id="adminEmail">—</p></article>
+        <article class="admin-card"><span class="admin-icon">02</span><small>CHALLENGES</small><strong id="adminQuestionCount">135</strong><p>Across the learning roadmap</p></article>
+        <article class="admin-card"><span class="admin-icon">03</span><small>STUDENT COUNT</small><strong id="adminStudentCount">—</strong><p>Students with accounts in this training portal</p></article>
+      </div>
+      <div class="admin-table-card">
+        <div class="admin-table-head">
+          <div><span class="eyebrow">STUDENT PROGRESS</span><h3>All students</h3></div>
+          <div class="admin-table-actions">
+            <button id="adminRefreshBtn" class="ghost-btn">Refresh</button>
+            <button id="adminExportBtn" class="primary-btn">Download report (CSV)</button>
+          </div>
+        </div>
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Progress</th><th>Levels completed</th><th>Challenges completed</th></tr>
+            </thead>
+            <tbody id="adminStudentTableBody"></tbody>
+          </table>
+          <div id="adminStudentTableEmpty" class="empty hidden">No students have signed up yet.</div>
+        </div>
+      </div>
+
+      <div class="admin-note"><strong>Database note</strong><p>Student/admin access is controlled by the <code>profiles.role</code> value in Supabase. Run <code>supabase_setup.sql</code> in the Supabase SQL editor to create the tables and security policies. New accounts are students; promote administrators from the SQL editor as documented in that file.</p></div>
+    </main>
+  </section>
+
+  <!-- LAB -->
+  <section id="labApp" class="screen lab-app hidden">
+    <header class="topbar lab-topbar">
+      <div class="brand-lockup"><div class="brand-mark small">SQL</div><div><strong>SQL MASTERY LAB</strong><small>Ecommerce Database · Placement Training</small></div></div>
+      <div class="top-actions">
+        <button class="ghost-btn" id="homeBtn">Home</button>
+        <button class="ghost-btn" id="schemaBtn">Schema</button>
+        <button class="ghost-btn" id="readmeBtn">Guide</button>
+        <button class="ghost-btn danger-text" id="resetBtn">Reset progress</button>
+        <button class="ghost-btn" data-action="logout">Sign out</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="sidebar">
+        <section class="profile-card">
+          <div class="profile-heading"><div class="avatar">S</div><div><small>LEARNER</small><strong id="profileName">SQL Student</strong></div></div>
+          <label for="studentName">Student name</label>
+          <input id="studentName" type="text" placeholder="Enter your name">
+          <div class="score-row"><strong id="progressPercent">0%</strong><span id="progressCount">0 / 135</span></div>
+          <div class="progress"><div id="progressBar"></div></div>
+        </section>
+        <div class="sidebar-heading"><span>ROADMAP</span><small>15 LEVELS</small></div>
+        <nav id="levelNav"></nav>
+        <section class="tip-card"><span class="tip-label">PLACEMENT HABIT</span><strong>Think before you type.</strong><p>Read the requirement, identify the SQL concept, write the query, run it, then explain the result.</p></section>
+      </aside>
+
+      <section class="workspace">
+        <div class="hero">
+          <div><span class="pill"><span id="challengeCountBadge">135</span> CHALLENGES</span><h1>From SELECT to Advanced SQL</h1><p>Practise every SQL topic with three easy, three medium, and three hard challenges.</p></div>
+          <div class="hero-stat"><span id="levelStat">Level 1</span><strong id="levelProgress">0 / 9</strong><small>completed</small></div>
+        </div>
+
+        <div class="tabs">
+          <button class="tab active" data-view="practice">Practice</button>
+          <button class="tab" data-view="schema">Schema Explorer</button>
+          <button class="tab" data-view="progress">Progress</button>
+        </div>
+
+        <div id="practiceView">
+          <div class="challenge-head">
+            <div>
+              <div class="eyebrow" id="levelLabel">LEVEL 1</div>
+              <h2 id="levelTitle">Level title</h2>
+              <p class="level-topic" id="levelTopic"></p>
+              <p class="question-position" id="questionNumber"></p>
+            </div>
+            <div id="difficultyBadge" class="difficulty-badge">Easy</div>
+          </div>
+          <div id="questionNumbers" class="question-buttons"></div>
+          <div class="question-card"><p id="questionText"></p><div class="requirements" id="requirements"></div></div>
+
+          <div class="editor-card">
+            <div class="editor-toolbar"><div><span class="editor-dot"></span><strong>SQL Editor</strong><small>SQLite-compatible browser execution</small></div><button id="clearBtn" class="mini-btn">Clear</button></div>
+            <textarea id="sqlEditor" spellcheck="false" placeholder="Write your SQL query here..."></textarea>
+            <div class="editor-actions">
+              <button id="runBtn" class="primary-btn">Run Query <span>▶</span></button>
+              <button id="checkBtn" class="success-btn">Check Answer <span>✓</span></button>
+              <button id="hintBtn" class="secondary-btn">Hint</button>
+              <button id="solutionBtn" class="secondary-btn">Show Solution</button>
+              <button id="prevBtn" class="secondary-btn">← Previous</button>
+              <button id="nextBtn" class="secondary-btn">Next →</button>
+            </div>
+            <div id="feedback" class="feedback" aria-live="polite"></div>
+            <div id="solution" class="solution hidden"></div>
+          </div>
+
+          <div class="results-card">
+            <div class="results-head"><div><span class="eyebrow">OUTPUT</span><strong>Query Result</strong></div><span id="resultMeta">Run a query to see results.</span></div>
+            <div id="queryResults" class="result-area"><div class="empty">Your query result will appear here.</div></div>
+          </div>
+        </div>
+
+        <div id="schemaView" class="hidden">
+          <div class="section-title"><div><div class="eyebrow">DATABASE</div><h2>Ecommerce Database</h2><p>Explore tables, columns, relationships and sample data.</p></div></div>
+          <div id="schemaContainer" class="schema-grid"></div>
+        </div>
+
+        <div id="progressView" class="hidden">
+          <div class="section-title"><div><div class="eyebrow">YOUR JOURNEY</div><h2>Progress Tracker</h2><p>Complete challenges to unlock your SQL confidence level by level.</p></div><div class="big-progress" id="overallProgress">0%</div></div>
+          <div id="progressCards" class="progress-grid"></div>
+        </div>
+      </section>
+    </main>
+  </section>
+
+  <!-- GUIDE MODAL -->
+  <div id="guideModal" class="modal hidden">
+    <div class="modal-card">
+      <button id="closeGuideBtn" class="modal-close">×</button>
+      <span class="eyebrow">STUDENT GUIDE</span><h2>How to use the SQL Mastery Lab</h2>
+      <ol><li>Select a level from the roadmap.</li><li>Read the challenge and identify the required SQL concept.</li><li>Write your query in the editor and click <strong>Run Query</strong>.</li><li>Use <strong>Check Answer</strong> when you are ready.</li><li>Use Hint before Show Solution whenever possible.</li><li>Completed question numbers turn green. Progress syncs to your student account and is also cached in this browser.</li></ol>
+      <div class="modal-tip"><strong>Important:</strong> The practice engine runs SQL in your browser using sql.js. It is a learning sandbox; it is not a connection to your production MySQL server.</div>
+    </div>
+  </div>
+
+  <footer class="site-footer"><span>© 2026 KG College of Arts & Science · Technical Training Department</span><span>SQL Mastery Lab</span></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="schema-data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
