@@ -339,3 +339,45 @@ input:focus,textarea:focus{
 @media(prefers-reduced-motion:reduce){
   .login-brand,.login-card,.login-brand .brand-mark,.login-highlights span,.app-shell:before,.hero:after{animation:none}
 }
+
+/* refined interaction and view transitions */
+@keyframes view-enter{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes card-enter{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.screen:not(.hidden){animation:view-enter .36s cubic-bezier(.2,.7,.25,1) both}
+#practiceView:not(.hidden),#schemaView:not(.hidden),#progressView:not(.hidden){animation:view-enter .28s ease-out both}
+.question-card,.editor-card,.results-card,.profile-card,.tip-card,.admin-table-card{
+  transition:border-color .2s ease,box-shadow .2s ease
+}
+.question-card:hover,.results-card:hover,.profile-card:hover,.tip-card:hover,.admin-table-card:hover{
+  border-color:rgba(65,101,220,.17);
+  box-shadow:0 12px 30px rgba(35,54,94,.075)
+}
+.editor-card:focus-within{
+  border-color:rgba(65,101,220,.3);
+  box-shadow:0 14px 36px rgba(35,54,94,.11)
+}
+.level-btn.active{box-shadow:inset 3px 0 0 var(--accent)}
+.level-btn.completed .level-number{transition:transform .2s ease,box-shadow .2s ease}
+.level-btn.completed:hover .level-number{transform:scale(1.08);box-shadow:0 3px 9px rgba(31,169,113,.22)}
+.question-number.active{box-shadow:0 4px 12px rgba(65,101,220,.15)}
+.primary-btn:active,.success-btn:active,.secondary-btn:active,.ghost-btn:active,.mini-btn:active,.question-number:active{
+  transform:translateY(0) scale(.98)
+}
+.tab{position:relative}
+.tab:not(.active):hover{background:rgba(65,101,220,.045)}
+.difficulty-badge{transition:background .2s ease,color .2s ease}
+.solution{animation:card-enter .24s ease-out both}
+.progress>div,.pc-bar>div{transition:width .65s cubic-bezier(.2,.7,.25,1)}
+.result-table tbody tr,.schema-table tbody tr,.admin-table tbody tr{
+  transition:background-color .16s ease
+}
+.modal-card{animation:card-enter .24s ease-out both}
+@media(prefers-reduced-motion:reduce){
+  .screen:not(.hidden),#practiceView:not(.hidden),#schemaView:not(.hidden),#progressView:not(.hidden),.solution,.modal-card{animation:none}
+}

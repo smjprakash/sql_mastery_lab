@@ -1542,7 +1542,7 @@ const levels = [
     topic: "WHERE and Comparison Operators",
     questions: [
       { difficulty: "Easy", question: "Display customers who live in Chennai.", answer: "SELECT * FROM Customers WHERE city = 'Chennai';", hint: "Use WHERE to compare city with the text value 'Chennai'." },
-      { difficulty: "Medium", question: "Display the names and ages of customers who are at least 30 years old.", answer: "SELECT CustomerName, age FROM Customers WHERE age >= 30 ORDER BY age;", hint: "Use >= and return only the requested columns." },
+      { difficulty: "Medium", question: "Display the names and ages of customers who are at least 30 years old. Arrange your output in ascending order of age.", answer: "SELECT CustomerName, age FROM Customers WHERE age >= 30 ORDER BY age;", hint: "Use >= and return only the requested columns." },
       { difficulty: "Hard", question: "Display products priced from 3,000 through 60,000, ordered from the least expensive. Include the product name and price in the query", answer: "SELECT ProductName, Price FROM Products WHERE Price >= 3000 AND Price <= 60000 ORDER BY Price;", hint: "Use both comparison operators to include the two price limits." }
     ]
 
@@ -1552,11 +1552,11 @@ const levels = [
   {
     id: 3,
     title: "Logical Operators",
-    topic: "AND, OR and NOT",
+    topic: "Between And operators, IN, OR, AND and NOT",
     questions: [
-      { difficulty: "Easy", question: "Display customers who are female and live in Chennai.", answer: "SELECT * FROM Customers WHERE gender = 'F' AND city = 'Chennai';", hint: "Both conditions must be true." },
+      { difficulty: "Easy", question: "Display the quantity sold along with the sale id and date of sales for the products which were sold in February 2024.", answer: "SELECT saleID,saleDate,quantity FROM sales WHERE saleDate  between '2024-02-01' and '2024-02-29';", hint: "Use BETWEEN to specify the date range." },
       { difficulty: "Medium", question: "Display customers who live in Chennai or Bangalore and are older than 25.", answer: "SELECT * FROM Customers WHERE (city = 'Chennai' OR city = 'Bangalore') AND age > 25;", hint: "Use parentheses so the age condition applies to either city." },
-      { difficulty: "Hard", question: "Display male customers who are not from Chennai and are at least 30 years old.", answer: "SELECT * FROM Customers WHERE gender = 'M' AND NOT city = 'Chennai' AND age >= 30;", hint: "Combine AND with NOT and a comparison." }
+      { difficulty: "Hard", question: "Find the name and age of the oldest male customer from Chennai.", answer: "SELECT name,age FROM Customers WHERE gender = 'M' AND  city = 'Chennai' ORDER BY age DESC LIMIT 1;", hint: "Combine AND with NOT and a comparison." }
     ]
 
   }
@@ -1571,8 +1571,8 @@ levels.push(
     topic: "LIKE and Wildcards",
     questions: [
       { difficulty: "Easy", question: "Display products whose names start with Laptop.", answer: "SELECT * FROM Products WHERE ProductName LIKE 'Laptop%';", hint: "Use LIKE with % after the starting text." },
-      { difficulty: "Medium", question: "Display product names ending with Monitor, ordered alphabetically.", answer: "SELECT ProductName FROM Products WHERE ProductName LIKE '%Monitor' ORDER BY ProductName;", hint: "Use % before the text to match any prefix." },
-      { difficulty: "Hard", question: "Display names of products containing the letter a that are not in the Accessories category.", answer: "SELECT ProductName FROM Products WHERE ProductName LIKE '%a%' AND Category <> 'Accessories' ORDER BY ProductName;", hint: "Combine a contains pattern with a category comparison." }
+      { difficulty: "Medium", question: "Display the names of products ending with Monitor that cost more than 20,000, ordered alphabetically.", answer: "SELECT ProductName FROM Products WHERE ProductName LIKE '%Monitor' AND Price > 20000 ORDER BY ProductName;", hint: "Use LIKE to match the ending, add a price condition with AND, then sort by product name." },
+      { difficulty: "Hard", question: "Display details of sales done on fifth of every month.Arrange your result in descending order of quantity sold", answer: "SELECT * FROM sales WHERE saleDate LIKE '%-05  ORDER BY Quantity desc;", hint: "Use LIKE to match dates ending in '-05', then ORDER BY Quantity DESC." }
     ]
   },
   {
@@ -1586,13 +1586,13 @@ levels.push(
     ]
   },
   {
-    id: 6,
-    title: "Missing Values",
-    topic: "NULL, IS NULL, IS NOT NULL and COALESCE",
+    id: 15,
+    title: "Window Functions",
+    topic: "ROW_NUMBER, RANK, SUM OVER and PARTITION BY",
     questions: [
-      { difficulty: "Easy", question: "Find sales records that do not have a sale date.", answer: "SELECT * FROM Sales WHERE SaleDate IS NULL;", hint: "Use IS NULL; equality comparisons do not match NULL." },
-      { difficulty: "Medium", question: "Display the IDs and dates of sales that have a recorded date, ordered by date.", answer: "SELECT SaleID, SaleDate FROM Sales WHERE SaleDate IS NOT NULL ORDER BY SaleDate;", hint: "Use IS NOT NULL to exclude missing dates." },
-      { difficulty: "Hard", question: "Display every sale ID and its date, showing the text Unknown when the date is missing.", answer: "SELECT SaleID, COALESCE(SaleDate, 'Unknown') AS SaleDate FROM Sales ORDER BY SaleID;", hint: "COALESCE returns the first non-NULL value." }
+      { difficulty: "Easy", question: "Display each sale ID and quantity with a row number, ordered from the largest quantity to the smallest.", answer: "SELECT SaleID, Quantity, ROW_NUMBER() OVER (ORDER BY Quantity DESC, SaleID) AS row_num FROM Sales ORDER BY row_num;", hint: "Use ROW_NUMBER() OVER with an ORDER BY inside the window." },
+      { difficulty: "Medium", question: "Rank each customer's sales by quantity from highest to lowest. Show the customer ID, sale ID, quantity, and rank.", answer: "SELECT CustomerID, SaleID, Quantity, RANK() OVER (PARTITION BY CustomerID ORDER BY Quantity DESC) AS quantity_rank FROM Sales ORDER BY CustomerID, quantity_rank;", hint: "Partition the window by CustomerID and use RANK() with descending quantity." },
+      { difficulty: "Hard", question: "For each sale, show the running total quantity for that customer in sale-date order.", answer: "SELECT CustomerID, SaleID, SaleDate, Quantity, SUM(Quantity) OVER (PARTITION BY CustomerID ORDER BY SaleDate, SaleID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_quantity FROM Sales ORDER BY CustomerID, SaleDate, SaleID;", hint: "Use SUM() OVER, partition by customer, and specify a cumulative window frame." }
     ]
   },
   {
@@ -1676,13 +1676,23 @@ levels.push(
     ]
   },
   {
-    id: 15,
+    id: 16,
     title: "Conditional Results",
     topic: "CASE Expressions",
     questions: [
       { difficulty: "Easy", question: "Show each product name and label its stock as Low when below 20, otherwise Available.", answer: "SELECT ProductName, CASE WHEN Stock < 20 THEN 'Low' ELSE 'Available' END AS stock_status FROM Products ORDER BY ProductID;", hint: "Use CASE WHEN Stock < 20 and provide an ELSE label." },
       { difficulty: "Medium", question: "Show each customer name and label them Senior when age is at least 30, otherwise Junior. Order by name.", answer: "SELECT CustomerName, CASE WHEN age >= 30 THEN 'Senior' ELSE 'Junior' END AS age_group FROM Customers ORDER BY CustomerName;", hint: "Build the label with a CASE expression." },
       { difficulty: "Hard", question: "For each product category, count products priced at 50,000 or more as premium_count and all others as standard_count.", answer: "SELECT Category, SUM(CASE WHEN Price >= 50000 THEN 1 ELSE 0 END) AS premium_count, SUM(CASE WHEN Price < 50000 THEN 1 ELSE 0 END) AS standard_count FROM Products GROUP BY Category ORDER BY Category;", hint: "Use conditional SUM expressions and group by category." }
+    ]
+  },
+  {
+    id: 17,
+    title: "String, Numeric and Date Functions",
+    topic: "UPPER, LENGTH, ROUND, ABS, DATE and STRFTIME",
+    questions: [
+      { difficulty: "Easy", question: "Display customer names in uppercase.", answer: "SELECT UPPER(CustomerName) AS customer_name FROM Customers ORDER BY CustomerName;", hint: "Apply UPPER() to CustomerName." },
+      { difficulty: "Medium", question: "Show each product name and its character count, longest names first.", answer: "SELECT ProductName, LENGTH(ProductName) AS name_length FROM Products ORDER BY name_length DESC, ProductName;", hint: "Use LENGTH() to count characters, then sort by the result." },
+      { difficulty: "Hard", question: "Display each sale's ID, date, and the year of that date. Exclude sales without a date.", answer: "SELECT SaleID, SaleDate, STRFTIME('%Y', SaleDate) AS sale_year FROM Sales WHERE SaleDate IS NOT NULL ORDER BY SaleDate;", hint: "Extract the year with STRFTIME('%Y', SaleDate) and filter out NULL dates." }
     ]
   }
 );
@@ -1702,18 +1712,18 @@ const additionalQuestions = [
   [1, "Hard", "Display names and ages of female customers aged 25 or older, ordered from oldest to youngest.", "SELECT CustomerName, age FROM Customers WHERE gender = 'F' AND age >= 25 ORDER BY age DESC;", "Filter on both gender and age, then sort descending by age."],
   [1, "Hard", "Display the name, price and stock of products costing less than 60,000 except those with stock below 20.", "SELECT ProductName, Price, Stock FROM Products WHERE Price < 60000 AND Stock >= 20 ORDER BY Price;", "Use both conditions to exclude low-stock products."],
 
-  [2, "Easy", "Display customers who are not from Chennai.", "SELECT * FROM Customers WHERE NOT city = 'Chennai';", "Negate the city comparison with NOT."],
+  [2, "Easy", "Find the saleid and productid of the products whose saleid is not known.", "SELECT saleid, productID  FROM Customers WHERE saledate is null;", "Compare the saledate column to NULL."],
   [2, "Easy", "Display customers who are either male or older than 35.", "SELECT * FROM Customers WHERE gender = 'M' OR age > 35;", "Use OR so either condition can match."],
-  [2, "Medium", "Display female customers who live in either Chennai or Bangalore.", "SELECT * FROM Customers WHERE gender = 'F' AND (city = 'Chennai' OR city = 'Bangalore');", "Use parentheses to group the city alternatives."],
+  [2, "Medium", "Display the details of Laptops and Monitors.", "SELECT * FROM Products WHERE category IN ('Laptop','Monitor');", "Use IN operator instead of OR."],
   [2, "Medium", "Display customers who are older than 30 and do not live in Mumbai.", "SELECT * FROM Customers WHERE age > 30 AND NOT city = 'Mumbai';", "Combine the age filter with NOT on the city."],
   [2, "Hard", "Display customers who live in Chennai or Bangalore, are younger than 35, and are female.", "SELECT * FROM Customers WHERE (city = 'Chennai' OR city = 'Bangalore') AND age < 35 AND gender = 'F';", "Group the city alternatives, then apply both remaining conditions."],
   [2, "Hard", "Display products that are laptops priced above 60,000 or monitors priced above 20,000.", "SELECT ProductName, Category, Price FROM Products WHERE (Category = 'Laptop' AND Price > 60000) OR (Category = 'Monitor' AND Price > 20000);", "Use parentheses to pair each category with its own price condition."],
 
-  [3, "Easy", "Display products whose names contain the word Laptop.", "SELECT * FROM Products WHERE ProductName LIKE '%Laptop%';", "Use percent signs on both sides to match text anywhere in the name."],
-  [3, "Easy", "Display product names that contain the word Monitor.", "SELECT ProductName FROM Products WHERE ProductName LIKE '%Monitor%';", "Place wildcards before and after the matching text."],
+  [3, "Easy", "Find the names of the customers whose names ends with 'ma'", "SELECT customerName FROM customers WHERE Name LIKE '%ma';", "Use percent signs on both sides to match text anywhere in the name."],
+  [3, "Easy", "Display the details of sales done in the year 2024.", "SELECT * FROM sales WHERE saledate LIKE '2024%';", "Place wildcards before  the matching text."],
   [3, "Medium", "Display product names with a three-character category-independent prefix followed by a space and Inch.", "SELECT ProductName FROM Products WHERE ProductName LIKE '___ Inch%';", "Each underscore matches one character; % matches the rest."],
   [3, "Medium", "Display products whose names contain the letter o and whose category is not Laptop.", "SELECT ProductName, Category FROM Products WHERE ProductName LIKE '%o%' AND Category <> 'Laptop';", "Combine a contains pattern with a category exclusion."],
-  [3, "Hard", "Display product names that contain both the word Laptop and the word Pro.", "SELECT ProductName FROM Products WHERE ProductName LIKE '%Laptop%' AND ProductName LIKE '%Pro%';", "Use two LIKE predicates joined with AND."],
+  [3, "Hard", "Display names of the customers that contain an e and a.", "SELECT customerName FROM customers WHERE custoemrName LIKE '%e%a%';", "Use two LIKE predicates."],
   [3, "Hard", "Display products whose names contain a space and end with a digit.", "SELECT ProductName FROM Products WHERE ProductName LIKE '% %' AND ProductName GLOB '*[0-9]';", "Combine LIKE for the space with GLOB and a digit range."],
 
   [4, "Easy", "Display customers whose ages are between 25 and 30 inclusive.", "SELECT * FROM Customers WHERE age BETWEEN 25 AND 30;", "Use BETWEEN with the two age limits."],
@@ -1723,12 +1733,12 @@ const additionalQuestions = [
   [4, "Hard", "Display sales made during January 2024, ordered by date.", "SELECT SaleID, SaleDate FROM Sales WHERE SaleDate BETWEEN '2024-01-01' AND '2024-01-31' ORDER BY SaleDate;", "Use BETWEEN on the ISO-formatted date values."],
   [4, "Hard", "Display Laptop or Monitor products priced between 15,000 and 70,000.", "SELECT ProductName, Category, Price FROM Products WHERE Category IN ('Laptop', 'Monitor') AND Price BETWEEN 15000 AND 70000 ORDER BY Price;", "Combine a category list with an inclusive price range."],
 
-  [5, "Easy", "Find sales with no recorded sale date.", "SELECT SaleID FROM Sales WHERE SaleDate IS NULL;", "Use IS NULL to find missing dates."],
-  [5, "Easy", "Show the ID and date for every sale that has a date.", "SELECT SaleID, SaleDate FROM Sales WHERE SaleDate IS NOT NULL;", "Use IS NOT NULL to exclude missing dates."],
-  [5, "Medium", "Show every sale ID and a date value, replacing missing dates with 2024-01-01.", "SELECT SaleID, COALESCE(SaleDate, '2024-01-01') AS SaleDate FROM Sales ORDER BY SaleID;", "COALESCE returns the date when present and the fallback otherwise."],
-  [5, "Medium", "Count the number of sales that have a date.", "SELECT COUNT(SaleDate) AS dated_sales FROM Sales;", "COUNT(column) skips NULL values."],
-  [5, "Hard", "Display every sale ID and classify its date as Missing or Recorded.", "SELECT SaleID, CASE WHEN SaleDate IS NULL THEN 'Missing' ELSE 'Recorded' END AS date_status FROM Sales ORDER BY SaleID;", "Use CASE with an IS NULL test."],
-  [5, "Hard", "Show a single value containing the earliest available sale date, or No dates if none exists.", "SELECT COALESCE(MIN(SaleDate), 'No dates') AS earliest_sale_date FROM Sales;", "MIN ignores NULL; wrap it in COALESCE for the fallback."],
+  [5, "Easy", "Number products from most expensive to least expensive within each category.", "SELECT ProductName, Category, Price, ROW_NUMBER() OVER (PARTITION BY Category ORDER BY Price DESC, ProductID) AS price_position FROM Products ORDER BY Category, price_position;", "Partition by category and number rows in descending price order."],
+  [5, "Easy", "Show each sale's quantity alongside the average quantity across all sales.", "SELECT SaleID, Quantity, AVG(Quantity) OVER () AS average_quantity FROM Sales ORDER BY SaleID;", "Use AVG() OVER () to calculate a window value across all rows."],
+  [5, "Medium", "For each sale, show the previous sale date for the same customer, ordered by date.", "SELECT CustomerID, SaleID, SaleDate, LAG(SaleDate) OVER (PARTITION BY CustomerID ORDER BY SaleDate, SaleID) AS previous_sale_date FROM Sales ORDER BY CustomerID, SaleDate, SaleID;", "Use LAG() OVER with a customer partition and date ordering."],
+  [5, "Medium", "Rank products from most expensive to least expensive within each category, allowing ties to share a rank.", "SELECT ProductName, Category, Price, RANK() OVER (PARTITION BY Category ORDER BY Price DESC) AS price_rank FROM Products ORDER BY Category, price_rank;", "Use RANK() OVER and partition the results by category."],
+  [5, "Hard", "For each customer, show the difference between a sale's quantity and that customer's average sale quantity.", "SELECT CustomerID, SaleID, Quantity, Quantity - AVG(Quantity) OVER (PARTITION BY CustomerID) AS difference_from_average FROM Sales ORDER BY CustomerID, SaleID;", "Subtract the customer's partitioned window average from each quantity."],
+  [5, "Hard", "Show each sale's quantity and the cumulative quantity sold across all customers in date order.", "SELECT SaleID, SaleDate, Quantity, SUM(Quantity) OVER (ORDER BY SaleDate, SaleID ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS cumulative_quantity FROM Sales ORDER BY SaleDate, SaleID;", "Use SUM() OVER with an ordered cumulative window frame."],
 
   [6, "Easy", "Count the customers and name the result customer_count.", "SELECT COUNT(*) AS customer_count FROM Customers;", "Use COUNT(*) with an alias."],
   [6, "Easy", "Show the lowest product price as lowest_price.", "SELECT MIN(Price) AS lowest_price FROM Products;", "Use MIN on the Price column."],
@@ -1786,12 +1796,19 @@ const additionalQuestions = [
   [13, "Hard", "Find products priced above the average price of products in their own category.", "SELECT ProductName, Category, Price FROM Products AS p WHERE Price > (SELECT AVG(Price) FROM Products WHERE Category = p.Category) ORDER BY Category, Price;", "Correlate the subquery with the outer product category."],
   [13, "Hard", "Find customers who have at least one sale, using EXISTS.", "SELECT CustomerName FROM Customers AS c WHERE EXISTS (SELECT 1 FROM Sales WHERE CustomerID = c.customerID) ORDER BY CustomerName;", "Correlate EXISTS to the customer's ID."],
 
-  [14, "Easy", "Show each product name and label its stock Low if below 20, otherwise Available.", "SELECT ProductName, CASE WHEN Stock < 20 THEN 'Low' ELSE 'Available' END AS stock_status FROM Products ORDER BY ProductID;", "Use CASE WHEN for the stock threshold."],
-  [14, "Easy", "Label each customer age as Adult when at least 30, otherwise Young.", "SELECT CustomerName, CASE WHEN age >= 30 THEN 'Adult' ELSE 'Young' END AS age_group FROM Customers ORDER BY CustomerName;", "Use CASE to return one of two labels."],
+  [14, "Easy", "Group product categories into Computing for Laptops, Displays for Monitors, and Other for the remaining products.", "SELECT ProductName, CASE Category WHEN 'Laptop' THEN 'Computing' WHEN 'Monitor' THEN 'Displays' ELSE 'Other' END AS product_group FROM Products ORDER BY ProductName;", "Use a simple CASE expression to map each category to a label."],
+  [14, "Easy", "Show each sale ID and label its date as Missing or Recorded.", "SELECT SaleID, CASE WHEN SaleDate IS NULL THEN 'Missing' ELSE 'Recorded' END AS date_status FROM Sales ORDER BY SaleID;", "Use CASE with IS NULL to distinguish missing dates."],
   [14, "Medium", "Classify product prices as Budget below 5,000, Mid-range below 30,000, and Premium otherwise.", "SELECT ProductName, CASE WHEN Price < 5000 THEN 'Budget' WHEN Price < 30000 THEN 'Mid-range' ELSE 'Premium' END AS price_band FROM Products ORDER BY Price;", "Use ordered WHEN branches for the three price ranges."],
   [14, "Medium", "Show each sale ID and label its quantity as Bulk for 2 or more units, otherwise Single.", "SELECT SaleID, CASE WHEN Quantity >= 2 THEN 'Bulk' ELSE 'Single' END AS sale_type FROM Sales ORDER BY SaleID;", "Use CASE to test Quantity."],
-  [14, "Hard", "For each category, count Premium products priced at least 50,000 and Standard products below 50,000.", "SELECT Category, SUM(CASE WHEN Price >= 50000 THEN 1 ELSE 0 END) AS premium_count, SUM(CASE WHEN Price < 50000 THEN 1 ELSE 0 END) AS standard_count FROM Products GROUP BY Category ORDER BY Category;", "Use conditional sums within each category group."],
-  [14, "Hard", "Show each customer with a label Frequent for at least two sales, otherwise Occasional, including customers with no sales.", "SELECT Customers.CustomerName, CASE WHEN COUNT(Sales.SaleID) >= 2 THEN 'Frequent' ELSE 'Occasional' END AS customer_type FROM Customers LEFT JOIN Sales ON Customers.customerID = Sales.CustomerID GROUP BY Customers.customerID, Customers.CustomerName ORDER BY Customers.customerID;", "LEFT JOIN, group by customer, and use CASE with the sale count."]
+  [14, "Hard", "Show each product and assign a restock priority: Urgent for laptops with stock below 20, Review for other products below 20, and None otherwise.", "SELECT ProductName, CASE WHEN Category = 'Laptop' AND Stock < 20 THEN 'Urgent' WHEN Stock < 20 THEN 'Review' ELSE 'None' END AS restock_priority FROM Products ORDER BY ProductID;", "Use ordered CASE conditions so the laptop-specific rule is checked first."],
+  [14, "Hard", "Show each customer with a label Frequent for at least two sales, otherwise Occasional, including customers with no sales.", "SELECT Customers.CustomerName, CASE WHEN COUNT(Sales.SaleID) >= 2 THEN 'Frequent' ELSE 'Occasional' END AS customer_type FROM Customers LEFT JOIN Sales ON Customers.customerID = Sales.CustomerID GROUP BY Customers.customerID, Customers.CustomerName ORDER BY Customers.customerID;", "LEFT JOIN, group by customer, and use CASE with the sale count."],
+
+  [15, "Easy", "Display product prices rounded to the nearest hundred.", "SELECT ProductName, ROUND(Price / 100.0) * 100 AS rounded_price FROM Products ORDER BY ProductID;", "Divide by 100, round to a whole number, then multiply by 100."],
+  [15, "Easy", "Show each sale ID and the sale date seven days later, excluding sales without a date.", "SELECT SaleID, DATE(SaleDate, '+7 days') AS date_after_week FROM Sales WHERE SaleDate IS NOT NULL ORDER BY SaleDate;", "Use DATE() with a '+7 days' modifier."],
+  [15, "Medium", "Show product names with their first three characters in lowercase.", "SELECT ProductName, LOWER(SUBSTR(ProductName, 1, 3)) AS name_prefix FROM Products ORDER BY ProductName;", "Combine SUBSTR() to extract the prefix and LOWER() to change its case."],
+  [15, "Medium", "Show each product's price difference from 50,000 as a positive value, rounded to two decimal places.", "SELECT ProductName, ROUND(ABS(Price - 50000), 2) AS price_difference FROM Products ORDER BY price_difference;", "Use ABS() for a positive difference, then round the result."],
+  [15, "Hard", "Display each sale's date as month-day and its quantity, ordered chronologically.", "SELECT SaleID, STRFTIME('%m-%d', SaleDate) AS month_day, Quantity FROM Sales WHERE SaleDate IS NOT NULL ORDER BY SaleDate, SaleID;", "Format the date with STRFTIME('%m-%d', SaleDate) and order by the original date."],
+  [15, "Hard", "Show product names in uppercase and the price after a 7.5 percent increase, rounded to two decimals.", "SELECT UPPER(ProductName) AS product_name, ROUND(Price * 1.075, 2) AS increased_price FROM Products ORDER BY ProductID;", "Apply UPPER() to the name and ROUND() to the increased price."]
 ];
 
 additionalQuestions.forEach(
@@ -1818,6 +1835,12 @@ levels.forEach(level => {
       difficultyOrder[b.difficulty]
   );
 });
+
+function getLevelDisplayOrder() {
+  return levels
+    .map((level, index) => ({ level, index }))
+    .sort((a, b) => a.level.id - b.level.id);
+}
 
 
 /* =========================================================
@@ -2219,10 +2242,9 @@ function renderLevelNav() {
   container.innerHTML = "";
 
 
-  levels.forEach(
+  getLevelDisplayOrder().forEach(
     (
-      level,
-      index
+      { level, index }
     ) => {
 
       const button =
@@ -3464,8 +3486,8 @@ function renderProgressCards() {
   }
 
   container.innerHTML =
-    levels.map(
-      (level, index) => `
+    getLevelDisplayOrder().map(
+      ({ level, index }) => `
         <div class="progress-card" data-progress-card="${index}">
           <div class="pc-top">
             <span>${escapeHtml(level.title)}</span>
