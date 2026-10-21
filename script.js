@@ -73,6 +73,11 @@ const loginMessage =
 const loginBtn =
   $("loginBtn");
 
+function clearLoginCredentials() {
+  $("loginEmail").value = "";
+  $("loginPassword").value = "";
+}
+
 supabaseClient.auth.onAuthStateChange(
   event => {
     if (event === "PASSWORD_RECOVERY") {
@@ -88,6 +93,10 @@ if (studentLoginTab) {
   studentLoginTab.addEventListener(
     "click",
     () => {
+
+      if (selectedLoginType !== "student") {
+        clearLoginCredentials();
+      }
 
       selectedLoginType = "student";
       $("signupName").value = "";
@@ -122,6 +131,10 @@ if (adminLoginTab) {
   adminLoginTab.addEventListener(
     "click",
     () => {
+
+      if (selectedLoginType !== "admin") {
+        clearLoginCredentials();
+      }
 
       selectedLoginType = "admin";
       $("signupName").value = "";
