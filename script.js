@@ -13,6 +13,9 @@ const SUPABASE_URL =
 const SUPABASE_ANON_KEY =
   "sb_publishable_DTJqWhC47yTkTRIgMcNNzQ_dUjjy9hf";
 
+const PASSWORD_RESET_REDIRECT_URL =
+  "https://sqlmastery-blue.vercel.app/";
+
 const supabaseClient =
   window.supabase.createClient(
     SUPABASE_URL,
@@ -467,8 +470,7 @@ async function requestPasswordReset() {
       await supabaseClient.auth.resetPasswordForEmail(
         email,
         {
-          redirectTo:
-            `${window.location.origin}${window.location.pathname}`
+          redirectTo: PASSWORD_RESET_REDIRECT_URL
         }
       );
 
