@@ -82,7 +82,6 @@ input{padding:12px 13px}input:focus,textarea:focus{border-color:rgba(55,99,232,.
 .question-card,.editor-card,.results-card,.schema-card,.progress-card,.admin-card,.admin-note,.admin-table-card{border:1px solid var(--line);background:var(--surface);border-radius:16px}.question-card{padding:20px;margin-bottom:14px}.question-card p{font-size:1rem;margin:0 0 10px;color:var(--text)}.requirements{color:#7c8ba3;font-size:.75rem}
 .editor-card{overflow:hidden}.editor-toolbar{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;border-bottom:1px solid var(--line)}.editor-toolbar div{display:flex;align-items:center;gap:8px}.editor-toolbar small{color:#8291a8;font-size:.65rem}.editor-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}.editor-toolbar strong{font-size:.75rem;color:var(--text)}#sqlEditor{min-height:240px;border:0;border-radius:0;padding:18px;font:500 .86rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical;background:#161d2b;color:#dce6fa}
 .editor-actions{display:flex;flex-wrap:wrap;gap:8px;padding:13px;border-top:1px solid var(--line)}.feedback{padding:0 15px;min-height:0;font-size:.78rem}.feedback:not(:empty){padding-bottom:14px}.feedback.success,.feedback.ok{color:var(--success)}.feedback.error,.feedback.bad{color:var(--danger)}.feedback.info,.feedback.warning{color:#3f5fc4}
-.solution{margin:0 15px 15px;padding:14px 16px;border-radius:12px;background:var(--surface3);border:1px solid var(--line)}.solution-header{margin-bottom:8px}.solution-header strong{font-size:.78rem;color:var(--text)}.solution pre{margin:0;overflow:auto}.solution code{font:500 .8rem/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;color:#2d52d0}
 .results-card{margin-top:14px;overflow:hidden}.results-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}.results-head strong{display:block;margin-top:3px;font-size:.85rem;color:var(--text)}.results-head>span{font-size:.65rem;color:#8291a8}.result-area{overflow:auto;max-height:430px}.result-table,.schema-table{border-collapse:collapse;width:100%;font-size:.72rem}.result-table th,.result-table td,.schema-table th,.schema-table td{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.result-table th,.schema-table th{background:var(--surface3);color:#425571;position:sticky;top:0}.result-table td{color:var(--text)}.empty{padding:40px;text-align:center;color:#93a1b5;font-size:.78rem}
 
 .section-title{margin-bottom:20px}.section-title p{margin:4px 0;color:var(--muted);font-size:.78rem}.big-progress{font:700 2.3rem "Space Grotesk";color:var(--accent)}.schema-grid{display:grid;gap:15px}.schema-card{padding:18px}.schema-card-header{display:flex;justify-content:space-between;align-items:flex-start}.schema-card-header h3{font:700 1rem "Space Grotesk";margin:0;color:var(--text)}.schema-label{font-size:.62rem;color:#8291a8;font-weight:800;letter-spacing:.1em}.schema-count{font-size:.65rem;color:#8291a8}.schema-description{color:#7c8ba3;font-size:.75rem;margin:10px 0 0}.key-badge{font-size:.58rem;padding:3px 6px;border-radius:5px;background:var(--surface3);color:#425571}.key-badge.pk{color:#188a5c}.key-badge.fk{color:#b06a08}.schema-table-wrapper,.result-table-wrapper{overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:14px}
@@ -372,12 +371,11 @@ input:focus,textarea:focus{
 .tab{position:relative}
 .tab:not(.active):hover{background:rgba(65,101,220,.045)}
 .difficulty-badge{transition:background .2s ease,color .2s ease}
-.solution{animation:card-enter .24s ease-out both}
 .progress>div,.pc-bar>div{transition:width .65s cubic-bezier(.2,.7,.25,1)}
 .result-table tbody tr,.schema-table tbody tr,.admin-table tbody tr{
   transition:background-color .16s ease
 }
 .modal-card{animation:card-enter .24s ease-out both}
 @media(prefers-reduced-motion:reduce){
-  .screen:not(.hidden),#practiceView:not(.hidden),#schemaView:not(.hidden),#progressView:not(.hidden),.solution,.modal-card{animation:none}
+  .screen:not(.hidden),#practiceView:not(.hidden),#schemaView:not(.hidden),#progressView:not(.hidden),.modal-card{animation:none}
 }

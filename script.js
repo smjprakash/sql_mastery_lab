@@ -96,7 +96,7 @@ supabaseClient.auth.onAuthStateChange(
       hideAllPages();
 
       // Display the login page
-      $("loginPage").classList.remove("hidden");
+      $("loginPage")?.classList.remove("hidden");
 
       // Display the password reset form
       setPasswordRecoveryMode(true);
@@ -1349,9 +1349,9 @@ async function signOutUser() {
    ========================================================= */
 
 async function restoreSession() {
-  // Do not restore the normal student session
-  // while processing an authentication callback.
 
+  // Do not restore the normal student session while processing
+  // an authentication callback from Supabase.
   const urlParams = new URLSearchParams(
     window.location.search
   );
@@ -1366,11 +1366,8 @@ async function restoreSession() {
     hashParams.get("type") === "recovery";
 
   if (isRecoveryCallback) {
-
     console.log("Authentication callback detected.");
-
     return;
-
   }
 
   try {
@@ -2513,21 +2510,6 @@ function renderQuestion() {
   }
 
 
-  const solution =
-    $("solution");
-
-
-  if (solution) {
-
-    solution.classList.add(
-      "hidden"
-    );
-
-    solution.innerHTML = "";
-
-  }
-
-
   updateNavigationButtons();
 
   updateQuestionButtons();
@@ -3273,49 +3255,6 @@ function showHint() {
 
 
 /* =========================================================
-   SOLUTION
-   ========================================================= */
-
-function showSolution() {
-
-  const question =
-    levels[currentLevel]
-      .questions[currentQuestion];
-
-
-  if (!question) {
-    return;
-  }
-
-
-  const solution =
-    $("solution");
-
-
-  if (!solution) {
-    return;
-  }
-
-
-  solution.innerHTML = `
-    <div class="solution-header">
-      <strong>Solution</strong>
-    </div>
-
-    <pre><code>${escapeHtml(
-      question.answer
-    )}</code></pre>
-  `;
-
-
-  solution.classList.remove(
-    "hidden"
-  );
-
-}
-
-
-/* =========================================================
    ESCAPE HTML
    ========================================================= */
 
@@ -3798,12 +3737,6 @@ $("checkBtn")?.addEventListener(
 $("hintBtn")?.addEventListener(
   "click",
   showHint
-);
-
-
-$("solutionBtn")?.addEventListener(
-  "click",
-  showSolution
 );
 
 
